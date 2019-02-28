@@ -8,7 +8,8 @@ const Map = ReactMapboxGl({
     accessToken: "pk.eyJ1Ijoiam9zaGciLCJhIjoiTFBBaE1JOCJ9.-BaGpeSYz4yPrpxh1eqT2A",
 })
 
-// const geojson = require('./data/walktheyorke_naturemaps_stages.geojson')
+const STAGE_DESCRIPTIONS = require('./data/stage_descriptions.json');
+
 const WTY_SOURCE = {
     "type": "geojson",
     "data": "/data/walktheyorke_naturemaps_stages.geojson"
@@ -96,6 +97,16 @@ const TRAIL_HIGHLIGHT_CASE_PAINT = {
     ]
 }
 
+const LEGEND_STYLE = {
+    backgroundColor: "#fff", 
+    borderRadius: "3px", 
+    "bottom": "30px", 
+    "padding": "10px", 
+    "position": "absolute", 
+    "right": "10px", 
+    zIndex: 1
+}
+
 class App extends Component {
     onMapLoad = (map) => {
         map.setMaxBounds (map.getBounds());
@@ -126,6 +137,14 @@ class App extends Component {
         map.setFilter('trail_lines_highlight_case', ['in', 'STAGE', ""]);
         map.getCanvas().style.cursor = '';
     }
+    trailClick(evt) {
+        var map = evt.target
+        var feature = map.queryRenderedFeatures(evt.point)[0];
+        new MapboxGL.Popup()
+            .setLngLat(evt.lngLat)
+            .setHTML('<h3>' + STAGE_DESCRIPTIONS[feature.properties.STAGE].title + "</h3>" + STAGE_DESCRIPTIONS[feature.properties.STAGE].description)
+            .addTo(map);
+    }
     render() {
         return (
             <Map
@@ -136,6 +155,13 @@ class App extends Component {
                 height: "100vh",
                 width: "100vw"
             }}>
+            <div style={LEGEND_STYLE}>
+                <div><h2>Click trail for information</h2></div>
+                <div><span style={{borderRadius: "50%", display: "inline-block", height: "10px", marginRight: "5px", width: "10px", backgroundColor: "hsl(33, 100%, 64%)"}}></span>Walk</div>
+                <div><span style={{borderRadius: "50%", display: "inline-block", height: "10px", marginRight: "5px", width: "10px", backgroundColor: "hsl(0, 100%, 69%)"}}></span>Bike</div>
+                <div><span style={{borderRadius: "50%", display: "inline-block", height: "10px", marginRight: "5px", width: "10px", backgroundColor: "hsl(82, 100%, 41%)"}}></span>Shared</div>
+                <div><span style={{borderRadius: "50%", display: "inline-block", height: "10px", marginRight: "5px", width: "10px", backgroundColor: "hsl(46, 98%, 30%)"}}></span>Unknown</div>
+            </div>
             <Source id="trail_lines" geoJsonSource={WTY_SOURCE} />
             <Layer 
                 id = "trail_lines_case"
@@ -185,6 +211,7 @@ class App extends Component {
                 sourceId = "trail_lines"
                 onMouseMove = {this.trailLineMouseMove}
                 onMouseLeave = {this.trailLineMouseLeave}
+                onClick = {this.trailClick}
                 paint = {{
                     "line-width": 40,
                     "line-opacity": 0
