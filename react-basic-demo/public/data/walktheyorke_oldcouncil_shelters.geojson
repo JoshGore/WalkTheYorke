@@ -1,0 +1,26 @@
+{
+"type": "FeatureCollection",
+"name": "walktheyorke_oldcouncil_shelters",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "NAME": "Macs Beach Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.989182, -34.361257 ] } },
+{ "type": "Feature", "properties": { "NAME": "Port Arthur Shelter" }, "geometry": { "type": "Point", "coordinates": [ 138.027978, -34.1317 ] } },
+{ "type": "Feature", "properties": { "NAME": "Hickeys Point Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.763276, -35.040327 ] } },
+{ "type": "Feature", "properties": { "NAME": "Wattle Point Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.702095, -35.138857 ] } },
+{ "type": "Feature", "properties": { "NAME": "Kemp Bay Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.588037, -35.132426 ] } },
+{ "type": "Feature", "properties": { "NAME": "Mozzie Flat Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.498639, -35.111685 ] } },
+{ "type": "Feature", "properties": { "NAME": "Sturt Bay Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.401167, -35.10857 ] } },
+{ "type": "Feature", "properties": { "NAME": "Foul Bay Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.211041, -35.179482 ] } },
+{ "type": "Feature", "properties": { "NAME": "Formby Bay (Baby Lizards) Shelter" }, "geometry": { "type": "Point", "coordinates": [ 136.958694, -35.091813 ] } },
+{ "type": "Feature", "properties": { "NAME": "Daly Head Shelter" }, "geometry": { "type": "Point", "coordinates": [ 136.940063, -35.023864 ] } },
+{ "type": "Feature", "properties": { "NAME": "Burners Beach Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.251339, -34.89643 ] } },
+{ "type": "Feature", "properties": { "NAME": "Port Minlacowie Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.459242, -34.827323 ] } },
+{ "type": "Feature", "properties": { "NAME": "Barkers Rocks Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.487502, -34.714498 ] } },
+{ "type": "Feature", "properties": { "NAME": "Wauraltee Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.511224, -34.586518 ] } },
+{ "type": "Feature", "properties": { "NAME": "Rex Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.881755, -34.555956 ] } },
+{ "type": "Feature", "properties": { "NAME": "Devils Gully Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.842079, -34.802369 ] } },
+{ "type": "Feature", "properties": { "NAME": "Balgowan North Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.500197, -34.313343 ] } },
+{ "type": "Feature", "properties": { "NAME": "Gap Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.501675, -34.234255 ] } },
+{ "type": "Feature", "properties": { "NAME": "Point Pearce Shelter" }, "geometry": { "type": "Point", "coordinates": [ 137.48733, -34.433151 ] } }
+]
+}
