@@ -8,11 +8,11 @@ const Map = ReactMapboxGl({
     accessToken: "pk.eyJ1Ijoiam9zaGciLCJhIjoiTFBBaE1JOCJ9.-BaGpeSYz4yPrpxh1eqT2A",
 })
 
-const STAGE_DESCRIPTIONS = require('data/stage_descriptions.json');
+const STAGE_DESCRIPTIONS = require('./data/stage_descriptions.json');
 
 const WTY_SOURCE = {
     "type": "geojson",
-    "data": "data/walktheyorke_naturemaps_stages.geojson"
+    "data": "./data/walktheyorke_naturemaps_stages.geojson"
 };
 
 const TRAIL_LINE_COLOR =  
