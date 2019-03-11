@@ -1,68 +1,144 @@
 {
+    "0": {
+        "title": "WALK THE YORKE",
+        "subtitle": "WITH MORE THAN 500 KILOMETRES OF CONTINUOUS SHARED WALKING & CYCLING LEISURE TRAIL, YOU CAN EXPLORE YORKE PENINSULA'S COASTLINE FROM PORT WAKEFIELD TO MOONTA BAY.",
+        "description": "<p>With coastal trails & town walks, Walk the Yorke showcases Yorke Peninsula’s spectacular coastline, diverse coastal communities and environments unique to ‘Yorkes’. <p></p> Choose from short walks or a day walk, or why not try a multi-day walk?  The hero walks of Walk The Yorke are those recommended by the designers and developers of this 500km trail, and have some of the best scenery & walking experiences. </p><p> Walkers can purchase detailed topographical maps of Walk The Yorke to help with planning their journey.  The maps can be purchased as sectional maps or as a complete set of 10 from the Yorke Peninsula Visitor Centre, place your order by <a href=\"mailto:info@visityorkepeninsula.com.au?subject=Walk%20The%20Yorke%20maps\">email</a> or <a href=\"tel:1800202445\">phone</a>.</p><p> The Walk the Yorke project is supported by funding from the Australian Government, South Australian Government and the <a href=\"http://www.yorke.sa.gov.au/\">Yorke Peninsula Council.</a>",
+        "notes": [
+            "Please plan your journey carefully, and take into account time needed to return to your starting point.",
+            "Make sure you take water and any other supplies you may need for your walk, and let someone know your plans.",
+            "When walking along a beach section that continues inland, keep a look out for the trail markers.  To avoid damage from the sea & high tides, the markers are positioned at the high tide mark.",
+            "In some sections, metal access stiles have been installed to prevent vehicles accessing the trail.  They also protect the senstive coastal environment from damage causing by vehicles.  Walkers can easily step over these stiles, but cyclists will need to lift their bike over the stile to continue along the marked trail.",
+            "Cyclists may find that some off-road sections of the trail can become soft at certain times oif the year, mainly during summer and autumn.  It may be easier for cyclists to walk their bikes along those sections, or can follow local unsealed roads before re-joining the marked trail.",
+            "For cyclists, the marked trail may follow a sealed main highway for part of a section.  Please take care and be aware of traffic including B-double trucks."
+        ]
+    },
     "1": {
-        "title": "Port Wakefield - Port Clinton",
-        "distance": "",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/port-wakefield-to-port-clinton\">Stage Description</a>",
-        "notes": ""
+        "title": "PORT WAKEFIELD TO PORT CLINTON",
+        "subtitle": "DISTANCE: 32.8KM (8 HOURS 12 MINUTES)",
+        "description": "<p>Start your walk from the Port Wakefield Caravan Park, following the signs towards the north and along the edge of the Clinton Conservation Park.</p><p>The Port Wakefield to Port Clinton section of Walk The Yorke is designed to be walked as one section (32.8km).  It can also be broken down into 2 sections Port Wakefield to Port Arthur 15km (3 hours 45 mins), and Port Arthur to Port Clinton 17.8km (4 hours 27 mins).</p><p>This walk takes you through part of the Samphire Coast, with unique ecosystems and mangroves, and a haven for migratory birds.</p><p>You will walk around the perimeter of the Clinton Conservation Park, which stretches from Port Wakefield to Port Clinton.  It covers an area of 396 hectares, with much of it mangrove swamp, but also important breeding grounds for a variety of marine life.</p><p>Port Arthur was once an active area, with a hotel and a port for shipping goods from Arthurton and now has a roadside camping area for travellers.  As you continue along the trail, you will go past the historic Port Arthur Gaol, sheep troughs and water catchments & dams created by ingenious early settlers.</p><p>The trail takes you inland from the highway, and a shelter provides an opportunity for 180 degree views of the Hummocks and Gulf St Vincent.</p>",
+        "notes": [
+            "Just north of Port Wakefield as you begin your walk, there is a creek crossing which can be difficult for walkers to cross in wet weather.  It is recommended that walkers follow Highway One north from Port Wakefield for 1.1km before turning onto Ketch Road on the left hand side of the highway then right onto Annie Watt Street which joins up with the trail following the disused railway line.",
+            "For cyclists, it is advised to follow the highway from Port Wakefield to Port Arthur."
+        ]
     },
     "2": {
-        "title": "Port Clinton - Ardrossan",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/port-clinton-to-ardrossan\">Stage Description</a>"
+        "title": "PORT CLINTON TO ARDROSSAN",
+        "subtitle": "DISTANCE: 27.8KM (6 HOURS 57 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "3": {
-        "title": "Ardrossan - Pine Point",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/ardrossan-to-pine-point\">Stage Description</a>"
+        "title": "ARDROSSAN TO PINE POINT",
+        "subtitle": "DISTANCE: 18.8KM (4 HOURS 42 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "4": {
-        "title": "Pine Point - Port Vincent",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/pine-point-to-port-vincent\">Stage Description</a>"
+        "title": "PINE POINT TO PORT VINCENT",
+        "subtitle": "DISTANCE: 28.5KM (7 HOURS 8 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "5": {
-        "title": "Port Vincent - Stansbury",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/port-vincent-to-stansbury\">Stage Description</a>"
+        "title": "PORT VINCENT TO STANSBURY",
+        "subtitle": "DISTANCE: 17.6KM (4 HOURS 24 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "6": {
-        "title": "Stansbury - Edithburgh",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/stansbury-to-edithburgh\">Stage Description</a>"
+        "title": "STANSBURY TO EDITHBURGH",
+        "subtitle": "DISTANCE: 29.2KM (7 HOURS 20 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "7": {
-        "title": "Edithburgh - Port Moorowie",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/edithburgh-to-port-moorowie\">Stage Description</a>"
+        "title": "EDITHBURGH TO PORT MOOROWIE",
+        "subtitle": "DISTANCE: 30.7KM (7 HOURS 41 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "8": {
-        "title": "Port Moorowie - Foul Bay",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/port-moorowie-to-foul-bay\">Stage Description</a>"
+        "title": "PORT MOOROWIE TO FOUL BAY",
+        "subtitle": "DISTANCE: 37.8KM (9 HOURS 28 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "9": {
-        "title": "Foul Bay - Marion Bay",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/foul-bay-to-marion-bay\">Stage Description</a>"
+        "title": "FOUL BAY TO MARION BAY",
+        "subtitle": "DISTANCE: 25.3KM (6 HOURS 20 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "10": {
-        "title": "Marion Bay - Gleesons Landing",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/marion-bay-to-gleesons-landing\">Stage Description</a>"
+        "title": "MARION BAY TO GLEESONS LANDING",
+        "subtitle": "DISTANCE: 53.1KM (13 HOURS 16 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "11": {
-        "title": "Gleesons Landing - Corny Point",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/gleesons-landing-to-corny-point\">Stage Description</a>"
+        "title": "GLEESONS LANDING TO CORNY POINT",
+        "subtitle": "DISTANCE: 20.5KM (4 HOURS 58 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "12": {
-        "title": "Corny Point - Point Turton",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/corny-point-to-point-turton\">Stage Description</a>"
+        "title": "CORNY POINT TO POINT TURTON",
+        "subtitle": "DISTANCE: 31.7KM (7 HOURS 56 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "13": {
-        "title": "Point Turton - Port Rickaby",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/point-turton-to-port-rickaby\">Stage Description</a>"
+        "title": "POINT TURTON TO PORT RICKABY",
+        "subtitle": "DISTANCE: 41.6KM (10 HOURS 25 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "14": {
-        "title": "Port Rickaby - Port Victoria",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/port-rickaby-to-port-victoria\">Stage Description</a>"
+        "title": "PORT RICKABY TO PORT VICTORIA",
+        "subtitle": "DISTANCE: 21.6KM (5 HOURS 24 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "15": {
-        "title": "Port Victoria - Balgowan",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/port-victoria-to-balgowan\">Stage Description</a>"
+        "title": "PORT VICTORIA TO BALGOWAN",
+        "subtitle": "DISTANCE: 21.3KM (5 HOURS 20 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     },
     "16": {
-        "title": "Balgowan - Moonta Bay",
-        "description": "<a target=\"_blank\" href=\"https://yorkepeninsula.com.au/walk-the-yorke/balgowan-to-moonta-bay\">Stage Description</a>"
+        "title": "BALGOWAN TO MOONTA BAY",
+        "subtitle": "DISTANCE: 41.1KM (10 HOURS 12 MINUTES)",
+        "description": "",
+        "notes": [
+
+        ]
     }
 }
