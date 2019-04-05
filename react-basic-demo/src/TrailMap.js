@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import ReactMapboxGl, { Layer, Source, Image } from "react-mapbox-gl";
+import React, { useState, useEffect } from 'react';
+import ReactMapboxGl, { Layer, Source, Image, Feature } from "react-mapbox-gl";
 import MapboxGL from "mapbox-gl";
-import Legend from "./Legend.js";
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 const Map = ReactMapboxGl({
     accessToken: "pk.eyJ1Ijoiam9zaGciLCJhIjoiTFBBaE1JOCJ9.-BaGpeSYz4yPrpxh1eqT2A",
@@ -102,11 +103,12 @@ const TRAIL_HIGHLIGHT_CASE_PAINT = {
 
 function TrailMap(props) {
     const [fitBounds, setFitBounds] = useState([[136.585109, -35.314486],[138.366868, -33.990990]]);
-    var onMapLoad = (map) => {
-        map.setMaxBounds ([
-            [ map.getBounds().getWest() - 0.1, map.getBounds().getSouth() - 0.1 ],
-            [ map.getBounds().getEast() + 0.1, map.getBounds().getNorth() + 0.1 ]
-        ]);
+    // const [map, setMap] = useState();
+    var onStyleLoad = (map) => {
+        props.setMap(map);
+        map.resize();
+        map.fitBounds(fitBounds);
+        // set max bound to result + margin if want to fit
         var geolocate = new MapboxGL.GeolocateControl({
             trackUserLocation: true,
             fitBoundsOptions: {
@@ -121,123 +123,142 @@ function TrailMap(props) {
         */
     }
     var trailLineMouseMove = (evt) => {
-        var map = evt.target
-        var feature = map.queryRenderedFeatures(evt.point).filter(feature => feature.layer.id === "trail_lines_target")[0];
-        props.handleActiveStageChange(feature.properties.STAGE);
+        var map = evt.target;
         map.getCanvas().style.cursor = 'pointer';
     }
     var trailLineMouseLeave = (evt) => {
-        var map = evt.target
-        props.handleActiveStageChange(0);
+        var map = evt.target;
         map.getCanvas().style.cursor = '';
     }
-    var trailClick = (evt) => {
-        var map = evt.target
-        var feature = map.queryRenderedFeatures(evt.point).filter(feature => feature.layer.id === "trail_lines_target")[0];
-        props.handleSelectedStageChange(feature.properties.STAGE);
-        /*
-        new MapboxGL.Popup()
-            .setLngLat(evt.lngLat)
-            .setHTML('<h3>' + STAGE_DESCRIPTIONS[feature.properties.STAGE].title + "</h3>" + STAGE_DESCRIPTIONS[feature.properties.STAGE].description)
-            .addTo(map);
-        */
+    var mapClick = (map, evt) => {
+        // var map = evt.target;
+        if (!props.menuState.addPoint) {
+            var feature = map.queryRenderedFeatures(evt.point).filter(feature => feature.layer.id === "trail_lines_target")[0];
+            if (feature) {
+                props.handleSelectedStageChange(feature.properties.STAGE)
+            }
+            else {
+                props.handleSelectedStageChange("0");
+                props.setMenuState({...props.menuState, show: false})
+            }
+        }
+        else {
+            console.log("setting issue");
+            props.setIssue({...props.issue, lngLat: {...evt.lngLat}})
+            // add a point at evt.lngLat by updating issue state
+            // evt.lngLat
+        }
     }
+    useEffect(() => {
+        // map && setTimeout((() => map.resize()), 600);
+        /*
+        map && map.setMaxBounds ([
+            [ map.getBounds().getWest() - 0.1, map.getBounds().getSouth() - 0.1 ],
+            [ map.getBounds().getEast() + 0.1, map.getBounds().getNorth() + 0.1 ]
+        ]);
+        */
+    });
     return (
         <Map
-        fitBounds = {fitBounds}
-        onStyleLoad = {onMapLoad}
-        style = "mapbox://styles/joshg/cjsv8vxg371cm1fmo1sscgou2"
-        containerStyle = {props.style}>
-        <Legend>
-        </Legend>
-        <Source id="trail_lines" geoJsonSource={WTY_LINE_SOURCE} />
-        <Source id="trail_shelters" geoJsonSource={WTY_SHELTER_SOURCE} />
-        <Image id={'shelter-icon'} url={"./icons/shelter-15.png"} />
-        <Layer
-            id = "trail_shelters"
-            type = "symbol"
-            sourceId = "trail_shelters"
-            layout = {{ 
-                "icon-image": "shelter-icon",
-                "icon-size": .8,
-                "icon-allow-overlap": true,
-                "text-allow-overlap": false,
-                "text-optional": true,
-                "text-field": "{NAME}",
-                "text-font": [
-                    "Open Sans Italic",
-                    "Arial Unicode MS Regular"
-                ],
-                "text-size": 10,
-                "text-anchor": "right",
-                "text-justify": "right",
-                "text-max-width": 12,
-                "text-offset": [-1, 0]
-            }}
-            paint = {{
-                "icon-opacity": 1,
-                "text-color": "hsl(131, 83%, 19%)"
-            }}
-        ></Layer>
-        <Layer 
-            id = "trail_lines_target"
-            before = "contour-label"
-            type = "line"
-            sourceId = "trail_lines"
-            onMouseMove = {trailLineMouseMove}
-            onMouseLeave = {trailLineMouseLeave}
-            onClick = {trailClick}
-            paint = {{
-                "line-width": 40,
-                "line-opacity": 0
-            }}
-        ></Layer>
-        <Layer 
-            id = "trail_lines_highlight"
-            before = "trail_lines_target"
-            type = "line"
-            sourceId = "trail_lines"
-            layout = {{
-                "line-join": "round",
-                "line-cap": "round"
-            }}
-            paint = {TRAIL_HIGHLIGHT_PAINT}
-            filter = {["in", "STAGE", props.activeStage]}
-        ></Layer>
-        <Layer 
-            id = "trail_lines_highlight_case"
-            before = "trail_lines_highlight"
-            type = "line"
-            sourceId = "trail_lines"
-            layout = {{
-                "line-join": "round",
-                "line-cap": "round"
-            }}
-            paint = {TRAIL_HIGHLIGHT_CASE_PAINT}
-            filter = {["in", "STAGE", props.activeStage]}
-        ></Layer>
-        <Layer 
-            id = "trail_lines"
-            before = "trail_lines_highlight_case"
-            type = "line"
-            sourceId = "trail_lines"
-            layout = {{
-                "line-join": "round",
-                "line-cap": "round"
-            }}
-            paint = {TRAIL_PAINT}
-        ></Layer>
-        <Layer 
-            id = "trail_lines_case"
-            before = "trail_lines"
-            type = "line"
-            sourceId = "trail_lines"
-            layout = {{
-                "line-join": "round",
-                "line-cap": "round"
-            }}
-            paint = {TRAIL_CASE_PAINT}
-        ></Layer>
+            fitBounds = {fitBounds}
+            onStyleLoad = {onStyleLoad}
+            onClick = {mapClick}
+            style = "mapbox://styles/joshg/cjsv8vxg371cm1fmo1sscgou2"
+            containerStyle = {props.style}>
+            <Source id="trail_lines" geoJsonSource={WTY_LINE_SOURCE} />
+            <Source id="trail_shelters" geoJsonSource={WTY_SHELTER_SOURCE} />
+            <Image id={'custom-shelter-icon'} url={"./icons/custom-shelter-15.png"} />
+            <Layer 
+                id = "issue" 
+                type="circle"
+                paint={{"circle-radius": 8, "circle-color": "red", "circle-stroke-width": 3, "circle-stroke-color": "white"}}
+        >
+                {props.issue && <Feature coordinates={[props.issue.lngLat.lng, props.issue.lngLat.lat]}/>}
+            </Layer>
+            <Layer
+                id = "trail_shelters"
+                type = "symbol"
+                sourceId = "trail_shelters"
+                layout = {{ 
+                    "icon-image": "custom-shelter-icon",
+                    "icon-size": .8,
+                    "icon-allow-overlap": true,
+                    "text-allow-overlap": false,
+                    "text-optional": true,
+                    "text-field": "{NAME}",
+                    "text-font": [
+                        "Open Sans Italic",
+                        "Arial Unicode MS Regular"
+                    ],
+                    "text-size": 10,
+                    "text-anchor": "right",
+                    "text-justify": "right",
+                    "text-max-width": 12,
+                    "text-offset": [-1, 0]
+                }}
+                paint = {{
+                    "icon-opacity": 1,
+                    "text-color": "hsl(131, 83%, 19%)"
+                }}
+            ></Layer>
+            <Layer 
+                id = "trail_lines_target"
+                before = "contour-label"
+                type = "line"
+                sourceId = "trail_lines"
+                onMouseMove = {trailLineMouseMove}
+                onMouseLeave = {trailLineMouseLeave}
+                paint = {{
+                    "line-width": 40,
+                    "line-opacity": 0
+                }}
+            ></Layer>
+            <Layer 
+                id = "trail_lines_highlight"
+                before = "trail_lines_target"
+                type = "line"
+                sourceId = "trail_lines"
+                layout = {{
+                    "line-join": "round",
+                    "line-cap": "round"
+                }}
+                paint = {TRAIL_HIGHLIGHT_PAINT}
+                filter = {["in", "STAGE", props.stage]}
+            ></Layer>
+            <Layer 
+                id = "trail_lines_highlight_case"
+                before = "trail_lines_highlight"
+                type = "line"
+                sourceId = "trail_lines"
+                layout = {{
+                    "line-join": "round",
+                    "line-cap": "round"
+                }}
+                paint = {TRAIL_HIGHLIGHT_CASE_PAINT}
+                filter = {["in", "STAGE", props.stage]}
+            ></Layer>
+            <Layer 
+                id = "trail_lines"
+                before = "trail_lines_highlight_case"
+                type = "line"
+                sourceId = "trail_lines"
+                layout = {{
+                    "line-join": "round",
+                    "line-cap": "round"
+                }}
+                paint = {TRAIL_PAINT}
+            ></Layer>
+            <Layer 
+                id = "trail_lines_case"
+                before = "trail_lines"
+                type = "line"
+                sourceId = "trail_lines"
+                layout = {{
+                    "line-join": "round",
+                    "line-cap": "round"
+                }}
+                paint = {TRAIL_CASE_PAINT}
+            ></Layer>
         </Map>
     );
 }
