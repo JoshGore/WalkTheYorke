@@ -4,7 +4,6 @@ import MapboxGL from "mapbox-gl";
 
 const Map = ReactMapboxGl({
     accessToken: "pk.eyJ1Ijoiam9zaGciLCJhIjoiTFBBaE1JOCJ9.-BaGpeSYz4yPrpxh1eqT2A",
-    trackResize: false,
 })
 
 const WTY_LINE_SOURCE = {
@@ -103,7 +102,7 @@ const TestDiv = ({onClick}) => {
     )
 }
 
-const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map, setMap, issue, setIssue, style}) => {
+const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, issue, setIssue, issues, setIssues, style}) => {
     const [fitBounds, setFitBounds] = useState([[136.585109, -35.314486],[138.366868, -33.990990]]);
     const [mapClickCoordinates, setMapClickCoordinates] = useState({lngLat: undefined, point: undefined});
     var onStyleLoad = (map) => {
@@ -142,16 +141,20 @@ const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map
     }, [mapClickCoordinates]);
 
     const addIssue = () => {
-        setIssue({...issue, lngLat: mapClickCoordinates.lngLat})
+        setIssue({...issue, lngLat: mapClickCoordinates.lngLat, id: (issues.length > 0 ? issues.slice(-1)[0].id + 1 : 0)})
     };
+
     const updateHighlight = () => {
         if (map) {
-            var feature = map.queryRenderedFeatures(mapClickCoordinates.point).filter(feature => feature.layer.id === "trail_lines_target")[0];
+            var feature = map.queryRenderedFeatures(mapClickCoordinates.point).filter(feature => feature.layer.id === "trail_lines_target" || feature.layer.id === "issues")[0];
+            setMenuState({...menuState, show: true});
             if (feature) {
-                setSelectedStage(feature.properties.STAGE)
+                feature.layer.id === "trail_lines_target" && setSelected({type: "stage", id: feature.properties.STAGE});
+                feature.layer.id === "issues" && setSelected({type: "issue", id: feature.properties.id});
+                setMenuState({...menuState, show: true})
             }
             else {
-                setSelectedStage(0);
+                setSelected({type: "stage", id: 0});
                 setMenuState({...menuState, show: false});
             }
         }
@@ -167,14 +170,32 @@ const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map
             containerStyle = {style}>
             <Source id="trail_lines" geoJsonSource={WTY_LINE_SOURCE} />
             <Source id="trail_shelters" geoJsonSource={WTY_SHELTER_SOURCE} />
-            <Image id={'custom-shelter-icon'} url={"./icons/custom-shelter-15.png"} />
-            <Layer 
-                id = "issue" 
-                type="circle"
-                paint={{"circle-radius": 8, "circle-color": "red", "circle-stroke-width": 3, "circle-stroke-color": "white"}}
-        >
-                {issue && <Feature coordinates={[issue.lngLat.lng, issue.lngLat.lat]}/>}
-            </Layer>
+            <Source id="issues" geoJsonSource={{
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "name": "issues",
+                    "crs": {
+                        "type": "name",
+                        "properties": {
+                            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+                        }
+                    },
+                    "features": issues.map(issue => ({
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [issue.lngLat.lng, issue.lngLat.lat]
+                        },
+                        "properties": {
+                            "issueType": issue.type,
+                            "description": issue.description,
+                            "id": issue.id
+                        }
+                    }))
+                }
+            }} />
+            <Image id={'custom-shelter-icon'} url={"./icons/custom-shelter-15.png"} onError={() => console.log("image loading error")} />
             <Layer
                 id = "trail_shelters"
                 type = "symbol"
@@ -184,6 +205,7 @@ const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map
                     "icon-size": .8,
                     "icon-allow-overlap": true,
                     "text-allow-overlap": false,
+                    "icon-optional": false,
                     "text-optional": true,
                     "text-field": "{NAME}",
                     "text-font": [
@@ -201,6 +223,20 @@ const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map
                     "text-color": "hsl(131, 83%, 19%)"
                 }}
             ></Layer>
+            <Layer 
+                id = "issue" 
+                type="circle"
+                paint={{"circle-radius": 8, "circle-color": "red", "circle-stroke-width": 3, "circle-stroke-color": "white"}}
+            >
+                {issue.lngLat && <Feature coordinates={[issue.lngLat.lng, issue.lngLat.lat]}/>}
+            </Layer>
+            <Layer 
+                id = "issues" 
+                type="circle"
+                paint={{"circle-radius": 5, "circle-color": "orange", "circle-stroke-width": 2, "circle-stroke-color": "white"}}
+                sourceId="issues"
+            >
+            </Layer>
             <Layer 
                 id = "trail_lines_target"
                 before = "contour-label"
@@ -223,7 +259,7 @@ const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map
                     "line-cap": "round"
                 }}
                 paint = {TRAIL_HIGHLIGHT_PAINT}
-                filter = {["in", "STAGE", selectedStage]}
+                filter = {["in", "STAGE", (selected.type == "stage" ? selected.id : '')]}
             ></Layer>
             <Layer 
                 id = "trail_lines_highlight_case"
@@ -235,7 +271,7 @@ const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map
                     "line-cap": "round"
                 }}
                 paint = {TRAIL_HIGHLIGHT_CASE_PAINT}
-                filter = {["in", "STAGE", selectedStage]}
+                filter = {["in", "STAGE", (selected.type == "stage" ? selected.id : '')]}
             ></Layer>
             <Layer 
                 id = "trail_lines"
