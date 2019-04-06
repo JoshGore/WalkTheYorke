@@ -55,13 +55,26 @@ const InformationPresentation = (props) => {
     )
 }
 
+const IssueButton = (props) => {
+    return (
+        <div onClick={() => props.setMenuState({...props.menuState, addPoint: true})} style={{display: "inline-block", borderRadius: "5px", backgroundColor: "lightgrey", width: "44%", margin: "0 4% 0 2%"}}>Issue</div>
+    )
+}
+
+const IssueForm = (props) => {
+    return (
+        <div>
+        </div>
+    )
+}
+
 const TrailInfo = (props) => {
     const toggleMenuAnimation = useSpring({
         height: props.menuState.show ? "66%" : "0%",
         backgroundColor: props.menuState.show ? "white" : "lightgrey",
         marginTop: props.menuState.show ? "-7px" : "0px",
         borderRadius: props.menuState.show ? "7px 7px 0px 0px" : "0px 0px 0px 0px",
-        onRest: () => props.map && props.map.resize(),
+        onRest: () => !props.menuState.show && props.map && props.map.resize(),
         config: {
             mass: 2,
             friction: 30
@@ -81,7 +94,7 @@ const TrailInfo = (props) => {
             <div style={{padding: "3px"}}>
                 <div style={{width: "100%"}}>
                     <div style={{display: "inline-block", borderRadius: "5px", backgroundColor: "lightgrey", width: "44%", margin: "0 4% 0 2%"}}>Legend</div>
-                    <div style={{display: "inline-block", borderRadius: "5px", backgroundColor: "lightgrey", width: "44%", margin: "0 4% 0 2%"}}>Issue</div>
+                <IssueButton setIssueMode={props.setIssueMode} menuState={props.menuState} setMenuState={props.setMenuState}/>
                 </div>
                 <div style={{color: "grey"}}>
                     Tap stages for info
@@ -93,20 +106,5 @@ const TrailInfo = (props) => {
         </animated.div>
     )
 }
-
-/*
-function TrailInfo (props) {
-    return (
-        <div style={props.style} >
-            <div>
-                <h1>{props.stageDescriptions[props.stage].title}</h1>
-                <p style={{color: "grey"}}><b><i>{props.stageDescriptions[props.stage].subtitle}</i></b></p>
-                <p dangerouslySetInnerHTML={{ __html: props.stageDescriptions[props.stage].description }}></p>
-                <ul>{props.stageDescriptions[props.stage].notes.map((note, key)=> <li key={key}>{note}</li>)}</ul>
-            </div>
-        </div>
-    );
-}
-*/
 
 export default TrailInfo;

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ReactMapboxGl, { Layer, Source, Image, Feature } from "react-mapbox-gl";
 import MapboxGL from "mapbox-gl";
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 const Map = ReactMapboxGl({
     accessToken: "pk.eyJ1Ijoiam9zaGciLCJhIjoiTFBBaE1JOCJ9.-BaGpeSYz4yPrpxh1eqT2A",
+    trackResize: false,
 })
-
-// const STAGE_DESCRIPTIONS = require('./data/stage_descriptions.json');
 
 const WTY_LINE_SOURCE = {
     "type": "geojson",
@@ -100,12 +97,17 @@ const TRAIL_HIGHLIGHT_CASE_PAINT = {
     ]
 }
 
+const TestDiv = ({onClick}) => {
+    return (
+        <div onClick={onClick} style={{position: "absolute", width: "100px", height: "20px", backgroundColor: "grey", zIndex: 10}}></div>
+    )
+}
 
-function TrailMap(props) {
+const TrailMap = ({selectedStage, setSelectedStage, menuState, setMenuState, map, setMap, issue, setIssue, style}) => {
     const [fitBounds, setFitBounds] = useState([[136.585109, -35.314486],[138.366868, -33.990990]]);
-    // const [map, setMap] = useState();
+    const [mapClickCoordinates, setMapClickCoordinates] = useState({lngLat: undefined, point: undefined});
     var onStyleLoad = (map) => {
-        props.setMap(map);
+        setMap(map);
         map.resize();
         map.fitBounds(fitBounds);
         // set max bound to result + margin if want to fit
@@ -130,41 +132,39 @@ function TrailMap(props) {
         var map = evt.target;
         map.getCanvas().style.cursor = '';
     }
-    var mapClick = (map, evt) => {
-        // var map = evt.target;
-        if (!props.menuState.addPoint) {
-            var feature = map.queryRenderedFeatures(evt.point).filter(feature => feature.layer.id === "trail_lines_target")[0];
+    const mapClick = (map, evt) => {
+        setMap(map);
+        setMapClickCoordinates({point: [evt.point.x, evt.point.y], lngLat: evt.lngLat});
+    };
+
+    useEffect(() => {
+        mapClickCoordinates.point && menuState.addPoint ? addIssue() : updateHighlight();
+    }, [mapClickCoordinates]);
+
+    const addIssue = () => {
+        setIssue({...issue, lngLat: mapClickCoordinates.lngLat})
+    };
+    const updateHighlight = () => {
+        if (map) {
+            var feature = map.queryRenderedFeatures(mapClickCoordinates.point).filter(feature => feature.layer.id === "trail_lines_target")[0];
             if (feature) {
-                props.handleSelectedStageChange(feature.properties.STAGE)
+                setSelectedStage(feature.properties.STAGE)
             }
             else {
-                props.handleSelectedStageChange("0");
-                props.setMenuState({...props.menuState, show: false})
+                setSelectedStage(0);
+                setMenuState({...menuState, show: false});
             }
         }
-        else {
-            console.log("setting issue");
-            props.setIssue({...props.issue, lngLat: {...evt.lngLat}})
-            // add a point at evt.lngLat by updating issue state
-            // evt.lngLat
-        }
-    }
-    useEffect(() => {
-        // map && setTimeout((() => map.resize()), 600);
-        /*
-        map && map.setMaxBounds ([
-            [ map.getBounds().getWest() - 0.1, map.getBounds().getSouth() - 0.1 ],
-            [ map.getBounds().getEast() + 0.1, map.getBounds().getNorth() + 0.1 ]
-        ]);
-        */
-    });
+    };
     return (
+        <>
+            {menuState.addPoint && <div style={{position: "absolute", zIndex: 4, backgroundColor: "rgba(0,0,0,0.2)"}}>Tap to add or move issue</div>}
         <Map
             fitBounds = {fitBounds}
             onStyleLoad = {onStyleLoad}
-            onClick = {mapClick}
+            onClick = {(map, evt) => mapClick(map, evt)}
             style = "mapbox://styles/joshg/cjsv8vxg371cm1fmo1sscgou2"
-            containerStyle = {props.style}>
+            containerStyle = {style}>
             <Source id="trail_lines" geoJsonSource={WTY_LINE_SOURCE} />
             <Source id="trail_shelters" geoJsonSource={WTY_SHELTER_SOURCE} />
             <Image id={'custom-shelter-icon'} url={"./icons/custom-shelter-15.png"} />
@@ -173,7 +173,7 @@ function TrailMap(props) {
                 type="circle"
                 paint={{"circle-radius": 8, "circle-color": "red", "circle-stroke-width": 3, "circle-stroke-color": "white"}}
         >
-                {props.issue && <Feature coordinates={[props.issue.lngLat.lng, props.issue.lngLat.lat]}/>}
+                {issue && <Feature coordinates={[issue.lngLat.lng, issue.lngLat.lat]}/>}
             </Layer>
             <Layer
                 id = "trail_shelters"
@@ -223,7 +223,7 @@ function TrailMap(props) {
                     "line-cap": "round"
                 }}
                 paint = {TRAIL_HIGHLIGHT_PAINT}
-                filter = {["in", "STAGE", props.stage]}
+                filter = {["in", "STAGE", selectedStage]}
             ></Layer>
             <Layer 
                 id = "trail_lines_highlight_case"
@@ -235,7 +235,7 @@ function TrailMap(props) {
                     "line-cap": "round"
                 }}
                 paint = {TRAIL_HIGHLIGHT_CASE_PAINT}
-                filter = {["in", "STAGE", props.stage]}
+                filter = {["in", "STAGE", selectedStage]}
             ></Layer>
             <Layer 
                 id = "trail_lines"
@@ -260,7 +260,9 @@ function TrailMap(props) {
                 paint = {TRAIL_CASE_PAINT}
             ></Layer>
         </Map>
+        </>
     );
 }
+
 
 export default TrailMap;
