@@ -2,7 +2,26 @@
 import React, { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 
-const LEGEND_AREA_ENTRY = {borderRadius: "50%", display: "inline-block", height: "10px", marginRight: "10px", width: "10px", };
+const LegendAreaEntry = ({color, description}) => {
+    return (
+        <div>
+            <div style={{width: "20px", display: "inline-block"}}>
+                <span style={{display: "inline-block", marginRight: "10px", height: "10px", width: "10px", borderRadius: "50%", backgroundColor: color}}></span>
+            </div>
+            {description}
+        </div>
+    )
+};
+const LegendLineEntry = ({color, description}) => {
+    return (
+        <div>
+            <div style={{width: "20px", display: "inline-block"}}>
+                <div style={{display: "inline-block", height: "2px", width: "15px", backgroundColor: color, transform: "rotate(-45deg)", transformOrigin: "0% 0%"}} />
+            </div>
+            {description}
+        </div>
+    )
+};
 
 // button to view info
 // bar with "tap for info"
@@ -30,10 +49,11 @@ const InfoButton = ({setMenuState, menuState}) => {
 const Legend = () => {
     return (
         <div>
-            <div><span style={{...LEGEND_AREA_ENTRY, backgroundColor: "hsl(33, 100%, 64%)"}}></span>Walk</div>
-            <div><span style={{...LEGEND_AREA_ENTRY, backgroundColor: "hsl(0, 100%, 69%)"}}></span>Bike</div>
-            <div><span style={{...LEGEND_AREA_ENTRY, backgroundColor: "hsl(82, 100%, 41%)"}}></span>Shared</div>
-            <div><span style={{...LEGEND_AREA_ENTRY, backgroundColor: "hsl(46, 98%, 30%)"}}></span>Unknown</div>
+            <LegendAreaEntry color={"hsl(33, 100%, 64%)"} description={"Issue"} />
+            <LegendLineEntry color={"hsl(33, 100%, 64%)"} description={"Walk"} />
+            <LegendLineEntry color={"hsl(0, 100%, 69%)"} description={"Bike"} />
+            <LegendLineEntry color={"hsl(82, 100%, 41%)"} description={"Shared"} />
+            <LegendLineEntry color={"hsl(46, 98%, 30%)"} description={"Unknown"} />
             <div><span style={{display: "inline-block", height: "10px", marginRight: "10px", width: "10px"}}><img src="./icons/shelter-15.png" /></span>Shelter</div>
         </div>
     )

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Measure from 'react-measure';
 import TrailMap from './TrailMap.js';
 import TrailInfo from './TrailInfo.js';
+import SetupPopup from './SetupPopup.js';
 import './App.css';
 
 const STAGE_DESCRIPTIONS = require('./data/stage_descriptions.json');
@@ -9,7 +10,10 @@ const STAGE_DESCRIPTIONS = require('./data/stage_descriptions.json');
 const App = () => {
     // active stage could re-added for hover effect
     const [selected, setSelected] = useState({type: "stage", id: "0"});
-    const [menuState, setMenuState] = useState({show: false, tempHide: false, addPoint: false});
+    const [menuState, setMenuState] = useState({setup: true, show: false, tempHide: false, addPoint: false});
+    // activity: walk / hike / bike / all
+    // accessible: yes / no
+    const [userType, setUserType] = useState({activity: "all", accessible: true});
     const [mapHeight, setMapHeight] = useState(null);
     const [map, setMap] = useState(undefined);
     const [points, setPoints]  = useState([]);
@@ -28,6 +32,7 @@ const App = () => {
                 setDimensions(contentRect.bounds)
             }}>
         {({measureRef}) => (<div ref={measureRef} style = {{ height: "100%", width: "100vw", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <SetupPopup userType={userType} setUserType={setUserType} menuState={menuState} setMenuState={setMenuState}/>
             <TrailMap 
                 style={{ flexGrow: 1, width: "100vw", backgroundColor: "rgb(235,234,213)", ...(mapHeight && {height: mapHeight, position: "absolute"}) }}
                 // style={{ flexGrow: 1, width: "100vw", backgroundColor: "rgb(235,234,213)", }}
@@ -41,6 +46,8 @@ const App = () => {
                 setIssue={setIssue}
                 issues={issues}
                 setIssues={setIssues}
+                userType={userType}
+                setUserType={setUserType}
             />
             <TrailInfo 
                 selected={selected} 

@@ -16,85 +16,6 @@ const WTY_SHELTER_SOURCE = {
     "data": "./data/walktheyorke_oldcouncil_shelters.geojson"
 };
 
-const TRAIL_LINE_COLOR = [
-    "case",
-    [
-        "match",
-        ["get", "TRAILTYPE"],
-        ["", "WALKING"],
-        true,
-        false
-    ],
-    "hsl(33, 100%, 64%)",
-    [
-        "match",
-        ["get", "TRAILTYPE"],
-        ["", "CYCLING"],
-        true,
-        false
-    ],
-    "hsl(0, 100%, 69%)",
-    [
-        "match",
-        ["get", "TRAILTYPE"],
-        ["", "SU:WALK,BIKE"],
-        true,
-        false
-    ],
-    "hsl(82, 100%, 41%)",
-    "hsl(46, 98%, 30%)"
-];
-
-const TRAIL_PAINT = {
-    "line-color": TRAIL_LINE_COLOR,
-    "line-width": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        4,
-        1,
-        22,
-        5
-    ]
-}
-const TRAIL_CASE_PAINT = {
-    "line-color": "white",
-    "line-width": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        4,
-        2,
-        22,
-        10
-    ]
-}
-
-const TRAIL_HIGHLIGHT_PAINT = {
-    "line-color": TRAIL_LINE_COLOR,
-    "line-width": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        4,
-        2,
-        22,
-        10
-    ]
-}
-
-const TRAIL_HIGHLIGHT_CASE_PAINT = {
-    "line-color": "white",
-    "line-width": [
-        "interpolate",
-        ["linear"],
-        ["zoom"],
-        4,
-        4,
-        22,
-        20
-    ]
-}
 
 const TestDiv = ({onClick}) => {
     return (
@@ -102,7 +23,7 @@ const TestDiv = ({onClick}) => {
     )
 }
 
-const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, issue, setIssue, issues, setIssues, style}) => {
+const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, issue, setIssue, issues, setIssues, style, userType, setUserType}) => {
     const [fitBounds, setFitBounds] = useState([[136.585109, -35.314486],[138.366868, -33.990990]]);
     const [mapClickCoordinates, setMapClickCoordinates] = useState({lngLat: undefined, point: undefined});
     var onStyleLoad = (map) => {
@@ -166,7 +87,10 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
             fitBounds = {fitBounds}
             onStyleLoad = {onStyleLoad}
             onClick = {(map, evt) => mapClick(map, evt)}
-            style = "mapbox://styles/joshg/cjsv8vxg371cm1fmo1sscgou2"
+            // standard outdoors
+            // style = "mapbox://styles/joshg/cjsv8vxg371cm1fmo1sscgou2"
+            // large text outdoors
+            style = {userType.accessible ? "mapbox://styles/joshg/cju6mn1r365xf1fpmi9yg8zwy" : "mapbox://styles/joshg/cjsv8vxg371cm1fmo1sscgou2"}
             containerStyle = {style}>
             <Source id="trail_lines" geoJsonSource={WTY_LINE_SOURCE} />
             <Source id="trail_shelters" geoJsonSource={WTY_SHELTER_SOURCE} />
@@ -212,7 +136,7 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
                         "Open Sans Italic",
                         "Arial Unicode MS Regular"
                     ],
-                    "text-size": 10,
+                    "text-size": (userType.accessible ? 20 : 10),
                     "text-anchor": "right",
                     "text-justify": "right",
                     "text-max-width": 12,
@@ -239,7 +163,7 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
             </Layer>
             <Layer 
                 id = "trail_lines_target"
-                before = "contour-label"
+                before = "data-stack-placeholder"
                 type = "line"
                 sourceId = "trail_lines"
                 onMouseMove = {trailLineMouseMove}
@@ -249,6 +173,7 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
                     "line-opacity": 0
                 }}
             ></Layer>
+
             <Layer 
                 id = "trail_lines_highlight"
                 before = "trail_lines_target"
@@ -258,7 +183,45 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
                     "line-join": "round",
                     "line-cap": "round"
                 }}
-                paint = {TRAIL_HIGHLIGHT_PAINT}
+                paint = {{
+                    "line-color": [
+                        "case",
+                        [
+                            "match",
+                            ["get", "TRAILTYPE"],
+                            ["", "WALKING"],
+                            true,
+                            false
+                        ],
+                        "hsl(33, 100%, 64%)",
+                        [
+                            "match",
+                            ["get", "TRAILTYPE"],
+                            ["", "CYCLING"],
+                            true,
+                            false
+                        ],
+                        "hsl(0, 100%, 69%)",
+                        [
+                            "match",
+                            ["get", "TRAILTYPE"],
+                            ["", "SU:WALK,BIKE"],
+                            true,
+                            false
+                        ],
+                        "hsl(82, 100%, 41%)",
+                        "hsl(46, 98%, 30%)"
+                    ],
+                        "line-width": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            4,
+                            2,
+                            22,
+                            10
+                        ]
+                }}
                 filter = {["in", "STAGE", (selected.type == "stage" ? selected.id : '')]}
             ></Layer>
             <Layer 
@@ -270,7 +233,18 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
                     "line-join": "round",
                     "line-cap": "round"
                 }}
-                paint = {TRAIL_HIGHLIGHT_CASE_PAINT}
+                paint = {{
+                    "line-color": "white",
+                        "line-width": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            4,
+                            4,
+                            22,
+                            20
+                        ]
+                }}
                 filter = {["in", "STAGE", (selected.type == "stage" ? selected.id : '')]}
             ></Layer>
             <Layer 
@@ -282,7 +256,45 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
                     "line-join": "round",
                     "line-cap": "round"
                 }}
-                paint = {TRAIL_PAINT}
+                paint = {{
+                    "line-color": [
+                        "case",
+                        [
+                            "match",
+                            ["get", "TRAILTYPE"],
+                            ["", "WALKING"],
+                            true,
+                            false
+                        ],
+                        "hsl(33, 100%, 64%)",
+                        [
+                            "match",
+                            ["get", "TRAILTYPE"],
+                            ["", "CYCLING"],
+                            true,
+                            false
+                        ],
+                        "hsl(0, 100%, 69%)",
+                        [
+                            "match",
+                            ["get", "TRAILTYPE"],
+                            ["", "SU:WALK,BIKE"],
+                            true,
+                            false
+                        ],
+                        "hsl(82, 100%, 41%)",
+                        "hsl(46, 98%, 30%)"
+                    ],
+                        "line-width": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            4,
+                            1,
+                            22,
+                            5
+                        ]
+                }}
             ></Layer>
             <Layer 
                 id = "trail_lines_case"
@@ -293,7 +305,18 @@ const TrailMap = ({selected, setSelected, menuState, setMenuState, map, setMap, 
                     "line-join": "round",
                     "line-cap": "round"
                 }}
-                paint = {TRAIL_CASE_PAINT}
+                paint = {{
+                    "line-color": "white",
+                        "line-width": [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            4,
+                            2,
+                            22,
+                            10
+                        ]
+                }}
             ></Layer>
         </Map>
         </>
