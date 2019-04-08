@@ -64,7 +64,7 @@ const InformationPresentation = ({menuState, setMenuState, stageDescriptions, is
         <>
         {selected.type === "stage" && 
             <>
-            <div style={{color: "grey", backgroundColor: "lightgrey", padding: "3px"}}>Tap map features for info</div>
+            <div style={{borderRadius: "5px 5px 0px 0px", backgroundColor: "lightgrey", padding: "3px", lineHeight: "calc(45px - 6px)", color: "grey"}}>Tap Map Features for Info</div>
             <div style={{margin: "10px 10px 0px 10px" }}>
                 <IssueButton menuState={menuState} setMenuState={setMenuState} />
                 <Legend />
@@ -83,7 +83,7 @@ const InformationPresentation = ({menuState, setMenuState, stageDescriptions, is
         }
         {selected.type === "issue" &&
             <>
-                <div style={{color: "grey", backgroundColor: "lightgrey", padding: "3px"}}>Tap map features for info</div>
+                <div style={{borderRadius: "5px 5px 0px 0px", backgroundColor: "lightgrey", padding: "3px", lineHeight: "calc(45px - 6px)", color: "grey"}}>Tap Map Features for Info</div>
                 <div style={{margin: "10px 10px 0px 10px" }}>
                     <IssueButton menuState={menuState} setMenuState={setMenuState} />
                     <Legend />
@@ -107,7 +107,7 @@ const InformationPresentation = ({menuState, setMenuState, stageDescriptions, is
 }
 
 const IssueButton = ({menuState, setMenuState, setIssue}) => {
-    return <div onClick={() => setMenuState({...menuState, addPoint: true})} style={{display: "inline-block", borderRadius: "5px", backgroundColor: "lightgrey", width: "100%"}}>Issue</div>
+    return <div onClick={() => setMenuState({...menuState, addPoint: true})} style={{display: "inline-block", borderRadius: "5px", backgroundColor: "lightpink", width: "100%", lineHeight: "calc(45px - 6px)", padding: "3px"}}>Tap to add Issue</div>
 }
 
 const IssueForm = ({menuState, setMenuState, issue, setIssue, issues, setIssues}) => {
@@ -116,9 +116,11 @@ const IssueForm = ({menuState, setMenuState, issue, setIssue, issues, setIssues}
         if(issue.lngLat) {
             setIssues([...issues, issue]);
             setIssue({type: 'Suggestion', details: '', name: '', contact: '', lngLat: undefined,});
+            setMenuState({...menuState, addPoint: false});
         };
     };
     const cancel = () => {
+        setIssue({type: 'Suggestion', details: '', name: '', contact: '', lngLat: undefined,});
         setMenuState({...menuState, addPoint: false})
         setIssue({type: '', description: '', lngLat: undefined,});
     };
@@ -137,7 +139,7 @@ const IssueForm = ({menuState, setMenuState, issue, setIssue, issues, setIssues}
 
     return (
         <div>
-            <div onClick={() => cancel()} style={{display: "inline-block", borderRadius: "5px", backgroundColor: "lightgrey", width: "100%"}}>Cancel</div>
+            <div onClick={() => cancel()} style={{borderRadius: "5px 5px 0px 0px", backgroundColor: "lightgrey", padding: "3px", lineHeight: "calc(45px - 6px)", color: "grey"}}>Tap to Cancel</div>
             <form onSubmit={submit} style={{padding: "3px"}}>
                 <div style={{width: "100%"}}>
                     <label>
